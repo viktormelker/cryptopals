@@ -3,6 +3,7 @@ import os
 import pdb
 sys.path.append(os.path.abspath("../../"))
 import cryptolib
+import base64
 
 def main():
     pdb.set_trace()
@@ -13,9 +14,11 @@ def main():
 
     cryptofile = open("cryptotexts.txt", "r")
     lines = cryptofile.readlines()
-    encrypted_text = ""
+    b64_text = ""
     for line in lines:
-        encrypted_text = encrypted_text + line
+        b64_text = b64_text + line
+
+    encrypted_text = base64.b64decode(b64_text)
 
     guessed_keysize = get_estimated_keysize(encrypted_text)
     separate_texts = []

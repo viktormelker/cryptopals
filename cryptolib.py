@@ -75,8 +75,8 @@ def rate_text_string(text):
 
 # try bitwise xor with a single byte. The byte is varied from 0 to 255.
 # The min_rating is the minimum rating (returned from rate_text_string)
-# that is printed as a result.
-# If print_all is true, then all texts with a higher rating then 
+#   that is printed as a result.
+# If print_all is true (non-zero?), then all texts with a higher rating then 
 # min_rating are printed, otherwise only the best one is printed
 def try_all_xor_bytes(text, min_rating, print_all):
     best_rating = -100
@@ -100,6 +100,7 @@ def try_all_xor_bytes(text, min_rating, print_all):
         print("Decryption was '%s'" % (best_text))
     else:
         print("No bitwise xor decryption was good enough :(")
+    return best_byte;
 
 # scores the found frequency with a score. The scoring is based on a triangular
 # distribution around the expected frequency where the score is equal to 
@@ -114,5 +115,31 @@ def rate_frequency(found_frequency, expected_frequency, error_factor, score_weig
    max_freq_diff = expected_frequency * error_factor 
    freq_diff = abs(found_frequency - expected_frequency)
    return max(0, score_weight * (1-freq_diff/float(max_freq_diff)))
+
+# This function uses a key to encrypt a text using repeating xor
+def xor_with_repeated_key(str_text, str_key):
+    k = 0
+    text_arr = bytearray(str_text)
+    key_arr = bytearray(str_key)
+    encrypted_arr = bytearray(str_text)
+    key_length = len(str_key)
+    pdb.set_trace()
+    for i in range(len(text_arr)):
+        encrypted_arr[i] = bitwise_xor(text_arr[i], key_arr[k])
+        k = (k + 1) % key_length
+
+    return str(encrypted_arr).encode("hex")
+
+#
+def get_hamming_distance(str1, str2):
+    text_arr1 = bytearray(str1)
+    text_arr2 = bytearray(str2)
+    res = 0;
+
+    for i in range(len(text_arr1)):
+        hamming_byte = bitwise_xor(text_arr1[i], text_arr2[i])
+        res = res + bin(hamming_byte).count("1")
+    return res
+
 
 
