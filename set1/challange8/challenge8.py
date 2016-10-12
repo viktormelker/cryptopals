@@ -21,10 +21,22 @@ def main():
         for b in data:
             counts[b] += 1
 
+        if (max(counts) > 4):
+            print("Max occurance of char in line %d is %d" % (i, max(counts)))
+
+        amounts = [0]*160
+        for a in counts:
+            amounts[a] += 1
+
+        if (amounts[0] > 145):
+            print("number of zeros in line %d is %d" % (i, amounts[0]))
+
         entropy = cryptolib.get_entropy(data, len(encrypted_text))
-        print("Entropy of line %d is %f" % (i , entropy))
-        cryptolib.histogram(counts, float(len(data)), "hist %d" % i)
+        #print("Entropy of line %d is %f" % (i , entropy))
+        #cryptolib.histogram(counts, float(len(data)), "hist %d" % i)
         i = i + 1
+
+        
 
 
 
