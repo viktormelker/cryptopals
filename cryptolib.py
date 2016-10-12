@@ -1,9 +1,10 @@
 import pdb
 import base64
+import math
 from string import ascii_lowercase
 from string import ascii_uppercase
 from collections import Counter
-
+import matplotlib.pyplot as plt
 
 # Performs bitwise Xor on 2 numbers of equal lengths
 def bitwise_xor(num1, num2):
@@ -142,4 +143,28 @@ def get_hamming_distance(str1, str2):
     return res
 
 
+def get_entropy(data, size):
+    '''Calculate the entropy of the data represented by the counts list'''
+    ent = 0.0
+    for b in data:
+        if b == 0:
+            continue
+        p = float(b)/size
+        ent -= p*math.log(p, 256)
+    return ent*8
 
+def histogram(counts, sz, name):
+    '''Use matplotlib to create a histogram from the data'''
+    xdata = [n for n in xrange(0, 256)]
+    data = [100*c/sz for c in counts]
+    top = math.ceil(max(data)*10.0)/10.0
+    rnd = [1.0/256*100]*256
+    fig = plt.figure(None, (7, 4), 100)
+    plt.axis([0, 255, 0, top])
+    plt.xlabel('byte value')
+    plt.ylabel('occurance [%]')
+    plt.plot(xdata, data, label=name)
+    plt.plot(xdata, rnd, label='continuous uniform')
+    #plt.legend(loc=(0.49, 0.15))
+    plt.savefig('hist-' + name+'.png', bbox_inches='tight')
+    plt.close()
